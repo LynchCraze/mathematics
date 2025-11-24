@@ -1,0 +1,1172 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Understanding Inverse Functions: A Multi-Faceted Guide</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+    <link href="https://fonts.googleapis.com/css2?family=Canela:wght@300;400;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+    <!-- Mermaid for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+
+    <style>
+        .font-canela { font-family: 'Canela', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        :root {
+            --primary: #1e40af;
+            --secondary: #64748b;
+            --accent: #f59e0b;
+            --neutral: #f8fafc;
+            --base: #ffffff;
+        }
+        
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .shadow-elevated {
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .toc-link {
+            transition: all 0.2s ease;
+        }
+        
+        .toc-link:hover {
+            color: #3b82f6;
+            padding-left: 1rem;
+        }
+        
+        .toc-link.active {
+            color: #3b82f6;
+            font-weight: 600;
+            border-left: 3px solid #3b82f6;
+            padding-left: 1rem;
+        }
+        
+        .math-display {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .citation-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .citation-link:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+        
+        /* Mermaid diagram styling */
+        .mermaid-container {
+            display: flex;
+            justify-content: center;
+            min-height: 300px;
+            max-height: 800px;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mermaid-container .mermaid {
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            cursor: grab;
+            transition: transform 0.3s ease;
+            transform-origin: center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .mermaid-container .mermaid svg {
+            max-width: 100%;
+            height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .mermaid-container .mermaid:active {
+            cursor: grabbing;
+        }
+
+        .mermaid-container.zoomed .mermaid {
+            height: 100%;
+            width: 100%;
+            cursor: grab;
+        }
+
+        .mermaid-controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .mermaid-control-btn {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #374151;
+            font-size: 14px;
+            min-width: 36px;
+            height: 36px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mermaid-control-btn:hover {
+            background: #f8fafc;
+            border-color: #3b82f6;
+            color: #3b82f6;
+            transform: translateY(-1px);
+        }
+
+        .mermaid-control-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Custom mermaid theme for better contrast and unified styling */
+        .mermaid .node rect,
+        .mermaid .node circle,
+        .mermaid .node ellipse,
+        .mermaid .node polygon {
+            stroke-width: 2px !important;
+            stroke: #1e40af !important;
+        }
+        
+        .mermaid .node .label {
+            color: #1f2937 !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        
+        .mermaid .edgePath .path {
+            stroke: #64748b !important;
+            stroke-width: 2px !important;
+        }
+        
+        .mermaid .edgeLabel {
+            background-color: #ffffff !important;
+            color: #374151 !important;
+            font-weight: 600 !important;
+            font-family: 'Inter', sans-serif !important;
+            border: 1px solid #d1d5db !important;
+            border-radius: 4px !important;
+            padding: 4px 8px !important;
+        }
+        
+        /* Different node colors with proper contrast */
+        .mermaid .node[style*="fill:#dbeafe"] rect,
+        .mermaid .node[style*="fill:#dbeafe"] circle,
+        .mermaid .node[style*="fill:#dbeafe"] polygon {
+            fill: #dbeafe !important;
+            stroke: #1e40af !important;
+        }
+        
+        .mermaid .node[style*="fill:#dcfce7"] rect,
+        .mermaid .node[style*="fill:#dcfce7"] circle,
+        .mermaid .node[style*="fill:#dcfce7"] polygon {
+            fill: #dcfce7 !important;
+            stroke: #059669 !important;
+        }
+        
+        .mermaid .node[style*="fill:#fef3c7"] rect,
+        .mermaid .node[style*="fill:#fef3c7"] circle,
+        .mermaid .node[style*="fill:#fef3c7"] polygon {
+            fill: #fef3c7 !important;
+            stroke: #d97706 !important;
+        }
+        
+        .mermaid .node[style*="fill:#f3e8ff"] rect,
+        .mermaid .node[style*="fill:#f3e8ff"] circle,
+        .mermaid .node[style*="fill:#f3e8ff"] polygon {
+            fill: #f3e8ff !important;
+            stroke: #7c3aed !important;
+        }
+        
+        .mermaid .node[style*="fill:#e0e7ff"] rect,
+        .mermaid .node[style*="fill:#e0e7ff"] circle,
+        .mermaid .node[style*="fill:#e0e7ff"] polygon {
+            fill: #e0e7ff !important;
+            stroke: #4338ca !important;
+        }
+        
+        @media (max-width: 1024px) {
+            .mermaid-control-btn:not(.reset-zoom) {
+                display: none;
+            }
+            .mermaid-controls {
+                top: auto;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+  <base target="_blank">
+</head>
+
+  <body class="bg-neutral font-inter text-slate-800 leading-relaxed">
+    <!-- Hamburger menu for mobile -->
+    <button id="toc-toggle" class="fixed top-4 left-4 z-50 p-2 bg-white rounded shadow-md md:hidden">
+      <i class="fas fa-bars text-gray-700"></i>
+    </button>
+
+    <!-- Fixed Table of Contents -->
+    <div id="toc-container" class="fixed left-0 top-0 h-screen w-80 bg-white shadow-2xl z-50 overflow-y-auto border-r border-gray-200 transform -translate-x-full md:translate-x-0 md:block transition-transform duration-300">
+      <div class="p-6">
+        <h3 class="font-canela font-bold text-lg text-slate-900 mb-6">Contents</h3>
+        <nav class="space-y-3">
+          <a href="#introduction" class="toc-link block text-sm text-slate-600 hover:text-blue-600 transition-colors">Introduction</a>
+          <a href="#core-concept" class="toc-link block text-sm text-slate-600 hover:text-blue-600 transition-colors">1. Core Concept</a>
+          <div class="ml-4 space-y-2">
+            <a href="#undoing-action" class="toc-link block text-xs text-slate-500 hover:text-blue-600 transition-colors">1.1 The &#34;Undoing&#34; Action</a>
+            <a href="#input-output-relationship" class="toc-link block text-xs text-slate-500 hover:text-blue-600 transition-colors">1.2 Input-Output Relationship</a>
+            <a href="#one-to-one-functions" class="toc-link block text-xs text-slate-500 hover:text-blue-600 transition-colors">1.3 One-to-One Functions</a>
+          </div>
+          <a href="#algebraic-techniques" class="toc-link block text-sm text-slate-600 hover:text-blue-600 transition-colors">2. Algebraic Techniques</a>
+          <div class="ml-4 space-y-2">
+            <a href="#step-by-step-process" class="toc-link block text-xs text-slate-500 hover:text-blue-600 transition-colors">2.1 Step-by-Step Process</a>
+            <a href="#worked-examples" class="toc-link block text-xs text-slate-500 hover:text-blue-600 transition-colors">2.2 Worked Examples</a>
+          </div>
+          <a href="#graphical-interpretation" class="toc-link block text-sm text-slate-600 hover:text-blue-600 transition-colors">3. Graphical Interpretation</a>
+          <div class="ml-4 space-y-2">
+            <a href="#reflection-principle" class="toc-link block text-xs text-slate-500 hover:text-blue-600 transition-colors">3.1 Reflection Principle</a>
+            <a href="#coordinate-swap" class="toc-link block text-xs text-slate-500 hover:text-blue-600 transition-colors">3.2 Coordinate Swap</a>
+            <a href="#plotting-functions" class="toc-link block text-xs text-slate-500 hover:text-blue-600 transition-colors">3.3 Plotting Functions</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-0 md:ml-80">
+      <!-- Hero Section -->
+      <section id="introduction" class="min-h-screen bg-gradient-primary flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+          <img src="https://kimi-web-img.moonshot.cn/img/get.pxhere.com/b6dc42b4364b4f41812d33664558ed57ffca484f.jpg" alt="Blue geometric reflection pattern" class="w-full h-full object-cover" size="wallpaper" aspect="wide" color="blue" style="photo" query="blue geometric reflection pattern" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <!-- Bento Grid Layout -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <!-- Title Section -->
+            <div class="col-span-1 md:col-span-8 text-left">
+              <h1 class="font-canela text-4xl sm:text-5xl md:text-6xl font-light text-white leading-tight mb-6">
+                <em class="block text-2xl sm:text-3xl md:text-4xl font-light opacity-80 mb-2">V. Aashis</em>
+                Understanding Inverse Functions
+              </h1>
+              <p class="text-lg sm:text-xl text-blue-100 font-light leading-relaxed max-w-2xl">
+                A comprehensive exploration of mathematical functions that &#34;undo&#34; operations,
+                revealing the elegant symmetry between inputs and outputs
+              </p>
+            </div>
+
+            <!-- Key Highlights -->
+            <div class="col-span-1 md:col-span-4 space-y-4">
+              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 hover-lift">
+                <i class="fas fa-exchange-alt text-2xl text-blue-200 mb-3"></i>
+                <h3 class="text-white font-semibold mb-2">Core Concept</h3>
+                <p class="text-blue-100 text-sm">Functions that reverse operations through f(f⁻¹(x)) = x</p>
+              </div>
+
+              <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 hover-lift">
+                <i class="fas fa-project-diagram text-2xl text-blue-200 mb-3"></i>
+                <h3 class="text-white font-semibold mb-2">Graphical Symmetry</h3>
+                <p class="text-blue-100 text-sm">Reflections across y = x reveal inverse relationships</p>
+              </div>
+
+             
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Content Sections -->
+      <div class="max-w-4xl mx-auto px-8 py-16 space-y-20">
+
+        <!-- Section 1: Core Concept -->
+        <section id="core-concept" class="space-y-12">
+          <div class="text-center mb-16">
+            <h2 class="font-canela text-4xl font-bold text-slate-900 mb-4">The Core Concept</h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+              Understanding what inverse functions truly represent in mathematics.
+            </p>
+          </div>
+
+          <div id="undoing-action" class="bg-white rounded-2xl shadow-elevated p-8 hover-lift">
+            <h3 class="font-canela text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+              <i class="fas fa-undo text-blue-600 mr-3"></i>
+              The &#34;Undoing&#34; Action
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+              <div class="space-y-4">
+                <p class="text-slate-700 leading-relaxed">
+                  An inverse function, denoted as f⁻¹(x), describes a function&#39;s ability to <strong>&#34;undo&#34; the operation of another function</strong>, f(x).
+                  If a function f takes an input a and produces an output b, then its inverse function f⁻¹ will take the input b and produce the original input a.
+                </p>
+
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                  <p class="text-blue-900 font-medium">
+                    This relationship is expressed as: if f(a) = b, then f⁻¹(b) = a
+                  </p>
+                </div>
+
+                <p class="text-slate-700 leading-relaxed">
+                  This &#34;undoing&#34; action is formally expressed through function composition, where <strong>f(f⁻¹(x)) = x</strong> and <strong>f⁻¹(f(x)) = x.</strong>
+                </p>
+              </div>
+
+              <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl">
+                <h4 class="font-semibold text-slate-900 mb-3">Machine Analogy</h4>
+                <p class="text-slate-700 text-sm leading-relaxed mb-4">
+                  Think of a machine that multiplies by 3 then adds 2. Input 4 becomes 14.
+                  The inverse machine would subtract 2 then divide by 3, turning 14 back into 4.
+                </p>
+                <div class="space-y-2 text-sm">
+                  <div class="flex items-center">
+                    <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">f</span>
+                    <span class="text-slate-600">4 → 3×4+2 = 14</span>
+                  </div>
+                  <div class="flex items-center">
+                    <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">f⁻¹</span>
+                    <span class="text-slate-600">14 → (14-2)÷3 = 4</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="input-output-relationship" class="bg-white rounded-2xl shadow-elevated p-8 hover-lift">
+            <h3 class="font-canela text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+              <i class="fas fa-exchange-alt text-green-600 mr-3"></i>
+              Input-Output Relationship
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="text-center p-6 bg-slate-50 rounded-xl">
+                <i class="fas fa-arrow-right text-3xl text-blue-600 mb-4"></i>
+                <h4 class="font-semibold text-slate-900 mb-2">Original Function</h4>
+                <p class="text-sm text-slate-600">Input x → Output y</p>
+                <div class="mt-3 text-lg font-mono text-blue-600">f(x) = y</div>
+              </div>
+
+              <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-green-50 rounded-xl">
+                <i class="fas fa-sync-alt text-3xl text-purple-600 mb-4"></i>
+                <h4 class="font-semibold text-slate-900 mb-2">Inverse Function</h4>
+                <p class="text-sm text-slate-600">Input y → Output x</p>
+                <div class="mt-3 text-lg font-mono text-green-600">f⁻¹(y) = x</div>
+              </div>
+
+              <div class="text-center p-6 bg-slate-50 rounded-xl">
+                <i class="fas fa-arrows-alt-h text-3xl text-orange-600 mb-4"></i>
+                <h4 class="font-semibold text-slate-900 mb-2">Domain &amp; Range</h4>
+                <p class="text-sm text-slate-600">Domain and range are swapped.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="one-to-one-functions" class="bg-white rounded-2xl shadow-elevated p-8 hover-lift">
+            <h3 class="font-canela text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+              <i class="fas fa-check-circle text-red-600 mr-3"></i>
+              The Prerequisite: One-to-One Functions
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <p class="text-slate-700 leading-relaxed mb-4">
+                  A function must be <strong>one-to-one</strong> to have an inverse. A function is one-to-one if each output value corresponds to exactly one input value. We can use the <strong>horizontal line test</strong> to determine this.
+                </p>
+
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg mb-4">
+                  <h4 class="font-semibold text-red-900 mb-2">Horizontal Line Test</h4>
+                  <p class="text-red-800 text-sm">A function is one-to-one if and only if no horizontal line intersects its graph more than once.</p>
+                </div>
+
+                <p class="text-slate-700 text-sm">
+                  For example, f(x) = x² fails the test because y = 4 intersects at x = 2 and x = -2.
+                  However, restricting the domain to x ≥ 0 makes it one-to-one with inverse f⁻¹(x) = √x.
+                </p>
+              </div>
+
+              <div class="bg-gradient-to-br from-red-50 to-pink-100 p-6 rounded-xl">
+                <h4 class="font-semibold text-slate-900 mb-4">Why Non-One-to-One Functions Fail</h4>
+                <div class="space-y-3 text-sm">
+                  <div class="flex items-start">
+                    <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
+                    <p class="text-slate-700">If f(x₁) = y and f(x₂) = y, then f⁻¹(y) would need to equal both x₁ and x₂</p>
+                  </div>
+                  <div class="flex items-start">
+                    <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
+                    <p class="text-slate-700">This violates the definition of a function (one input → one output)</p>
+                  </div>
+                  <div class="flex items-start">
+                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                    <p class="text-slate-700">One-to-one functions ensure unique inverse mappings</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Algebraic Techniques -->
+        <section id="algebraic-techniques" class="space-y-12">
+          <div class="text-center mb-16">
+            <h2 class="font-canela text-4xl font-bold text-slate-900 mb-4">Algebraic Techniques</h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+              Master the systematic process of finding inverse functions through algebraic manipulation
+            </p>
+          </div>
+
+          <div id="step-by-step-process" class="bg-white rounded-2xl shadow-elevated p-8 hover-lift">
+            <h3 class="font-canela text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+              <i class="fas fa-list-ol text-purple-600 mr-3"></i>
+              The Step-by-Step Process
+            </h3>
+
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl overflow-hidden">
+                <thead>
+                  <tr class="bg-slate-200">
+                    <th class="p-4 text-left font-semibold text-slate-900">Step</th>
+                    <th class="p-4 text-left font-semibold text-slate-900">Action</th>
+                    <th class="p-4 text-left font-semibold text-slate-900">Description</th>
+                  </tr>
+                </thead>
+                <tbody class="text-sm">
+                  <tr class="border-b border-slate-200 hover:bg-white transition-colors">
+                    <td class="p-4 font-bold text-blue-600">1</td>
+                    <td class="p-4 font-medium">Replace f(x) with y</td>
+                    <td class="p-4 text-slate-700">Notational change to make manipulation easier</td>
+                  </tr>
+                  <tr class="border-b border-slate-200 hover:bg-white transition-colors">
+                    <td class="p-4 font-bold text-green-600">2</td>
+                    <td class="p-4 font-medium">Swap x and y</td>
+                    <td class="p-4 text-slate-700">Core step that reverses input-output relationship</td>
+                  </tr>
+                  <tr class="border-b border-slate-200 hover:bg-white transition-colors">
+                    <td class="p-4 font-bold text-orange-600">3</td>
+                    <td class="p-4 font-medium">Solve for y</td>
+                    <td class="p-4 text-slate-700">Use algebraic techniques to isolate y</td>
+                  </tr>
+                  <tr class="hover:bg-white transition-colors">
+                    <td class="p-4 font-bold text-purple-600">4</td>
+                    <td class="p-4 font-medium">Replace y with f⁻¹(x)</td>
+                    <td class="p-4 text-slate-700">Final notation indicating inverse function</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="text-xs text-slate-500 mt-4 italic">
+            </p>
+          </div>
+
+          <div id="worked-examples" class="space-y-8">
+            <h3 class="font-canela text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+              <i class="fas fa-calculator text-blue-600 mr-3"></i>
+              Worked Examples
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="bg-white rounded-2xl shadow-elevated p-6 hover-lift">
+                <h4 class="font-semibold text-slate-900 mb-4 flex items-center">
+                  <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">1</span>
+                  Linear Function
+                </h4>
+                <div class="space-y-3 text-sm">
+                  <div class="bg-slate-50 p-3 rounded-lg">
+                    <span class="font-mono text-blue-600">f(x) = 2x + 3</span>
+                  </div>
+                  <div class="space-y-2">
+                    <div class="flex items-center">
+                      <span class="w-4 h-4 bg-blue-500 rounded-full mr-3"></span>
+                      <span class="font-mono">y = 2x + 3</span>
+                    </div>
+                    <div class="flex items-center">
+                      <span class="w-4 h-4 bg-green-500 rounded-full mr-3"></span>
+                      <span class="font-mono">x = 2y + 3</span>
+                    </div>
+                    <div class="flex items-center">
+                      <span class="w-4 h-4 bg-orange-500 rounded-full mr-3"></span>
+                      <span class="font-mono">y = (x - 3)/2</span>
+                    </div>
+                    <div class="flex items-center">
+                      <span class="w-4 h-4 bg-purple-500 rounded-full mr-3"></span>
+                      <span class="font-mono text-purple-600">f⁻¹(x) = (x - 3)/2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-2xl shadow-elevated p-6 hover-lift">
+                <h4 class="font-semibold text-slate-900 mb-4 flex items-center">
+                  <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">2</span>
+                  Rational Function
+                </h4>
+                <div class="space-y-3 text-sm">
+                  <div class="bg-slate-50 p-3 rounded-lg">
+                    <span class="font-mono text-green-600">f(x) = 1/x + 4</span>
+                  </div>
+                  <div class="space-y-2">
+                    <div class="flex items-center">
+                      <span class="w-4 h-4 bg-blue-500 rounded-full mr-3"></span>
+                      <span class="font-mono">y = 1/x + 4</span>
+                    </div>
+                    <div class="flex items-center">
+                      <span class="w-4 h-4 bg-green-500 rounded-full mr-3"></span>
+                      <span class="font-mono">x = 1/y + 4</span>
+                    </div>
+                    <div class="flex items-center">
+                      <span class="w-4 h-4 bg-orange-500 rounded-full mr-3"></span>
+                      <span class="font-mono">y = 1/(x - 4)</span>
+                    </div>
+                    <div class="flex items-center">
+                      <span class="w-4 h-4 bg-purple-500 rounded-full mr-3"></span>
+                      <span class="font-mono text-purple-600">f⁻¹(x) = 1/(x - 4)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
+              <h4 class="font-semibold text-slate-900 mb-4 flex items-center">
+                <i class="fas fa-check-double text-green-600 mr-3"></i>
+                Verifying Inverses Compositionally
+              </h4>
+              <p class="text-slate-700 mb-4">
+                To verify that two functions are inverses, we use the fundamental property: <strong>f(f⁻¹(x)) = x</strong> and <strong>f⁻¹(f(x)) = x.</strong>
+              </p>
+
+              <div class="bg-white rounded-xl p-6 shadow-inner">
+                <h5 class="font-semibold text-slate-900 mb-3">Verification for Linear Example:</h5>
+                <div class="space-y-2 text-sm font-mono">
+                  <div class="flex items-center justify-between">
+                    <span>f(f⁻¹(x)) = f((x-3)/2)</span>
+                    <span class="text-blue-600">= 2((x-3)/2) + 3 = x</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span>f⁻¹(f(x)) = f⁻¹(2x+3)</span>
+                    <span class="text-green-600">= ((2x+3)-3)/2 = x</span>
+                  </div>
+                </div>
+                <div class="mt-4 p-3 bg-green-100 rounded-lg">
+                  <p class="text-green-800 font-medium text-sm">✓ Both compositions yield x, confirming inverse relationship</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Graphical Interpretation -->
+        <section id="graphical-interpretation" class="space-y-12">
+          <div class="text-center mb-16">
+            <h2 class="font-canela text-4xl font-bold text-slate-900 mb-4">Graphical Interpretation</h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+              Discover the elegant geometric relationship between functions and their inverses through visual symmetry
+            </p>
+          </div>
+
+          <div id="reflection-principle" class="bg-white rounded-2xl shadow-elevated p-8 hover-lift">
+            <h3 class="font-canela text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+              <i class="fas fa-mirror text-blue-600 mr-3"></i>
+              The Reflection Principle
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <p class="text-slate-700 leading-relaxed mb-6">
+                  The graph of a function and its inverse are <strong>reflections of each other across the line y = x.</strong>
+                  If you fold the coordinate plane along y = x, the graphs would perfectly overlap.
+                </p>
+
+                <div class="space-y-4">
+                  <div class="flex items-start">
+                    <i class="fas fa-arrows-alt text-blue-500 mt-1 mr-3"></i>
+                    <div>
+                      <h4 class="font-semibold text-slate-900">Point Mapping</h4>
+                      <p class="text-sm text-slate-600">Every point (a, b) on f becomes (b, a) on f⁻¹</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start">
+                    <i class="fas fa-balance-scale text-green-500 mt-1 mr-3"></i>
+                    <div>
+                      <h4 class="font-semibold text-slate-900">Symmetry Axis</h4>
+                      <p class="text-sm text-slate-600">y = x is the perpendicular bisector connecting (a,b) to (b,a)</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start">
+                    <i class="fas fa-sync text-purple-500 mt-1 mr-3"></i>
+                    <div>
+                      <h4 class="font-semibold text-slate-900">Identity Connection</h4>
+                      <p class="text-sm text-slate-600">y = x represents the identity function I(x) = x</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-gradient-to-br from-blue-100 to-purple-100 p-6 rounded-xl">
+                <div class="mermaid-container">
+                  <div class="mermaid-controls">
+                    <button class="mermaid-control-btn zoom-in" title="放大">
+                      <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button class="mermaid-control-btn zoom-out" title="缩小">
+                      <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button class="mermaid-control-btn reset-zoom" title="重置">
+                      <i class="fas fa-expand-arrows-alt"></i>
+                    </button>
+                    <button class="mermaid-control-btn fullscreen" title="全屏查看">
+                      <i class="fas fa-expand"></i>
+                    </button>
+                  </div>
+                  <div class="mermaid">
+                    graph TD
+                    A[&#34;Function f&#34;] --&gt; B[&#34;Point (a, b)&#34;]
+                    B --&gt; C[&#34;Reflection across y=x&#34;]
+                    C --&gt; D[&#34;Point (b, a)&#34;]
+                    D --&gt; E[&#34;Inverse Function f⁻¹&#34;]
+                    F[&#34;Line y=x&#34;] --&gt; G[&#34;Axis of Symmetry&#34;]
+                    G --&gt; C
+
+                    style A fill:#dbeafe,stroke:#1e40af,stroke-width:2px,color:#1f2937
+                    style E fill:#dcfce7,stroke:#059669,stroke-width:2px,color:#1f2937
+                    style B fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#1f2937
+                    style D fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#1f2937
+                    style C fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px,color:#1f2937
+                    style F fill:#e0e7ff,stroke:#4338ca,stroke-width:2px,color:#1f2937
+                    style G fill:#f0f9ff,stroke:#0284c7,stroke-width:2px,color:#1f2937
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="coordinate-swap" class="bg-white rounded-2xl shadow-elevated p-8 hover-lift">
+            <h3 class="font-canela text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+              <i class="fas fa-exchange-alt text-green-600 mr-3"></i>
+              The Coordinate Swap Mechanism
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="text-center p-6 bg-blue-50 rounded-xl">
+                <div class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                  (a, b)
+                </div>
+                <h4 class="font-semibold text-slate-900 mb-2">Original Point</h4>
+                <p class="text-sm text-slate-600">On graph of f(x)</p>
+                <div class="mt-3 text-xs text-blue-600">Input: a, Output: b</div>
+              </div>
+
+              <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-green-50 rounded-xl">
+                <i class="fas fa-arrow-right text-4xl text-purple-600 mb-4"></i>
+                <h4 class="font-semibold text-slate-900 mb-2">Swap Coordinates</h4>
+                <p class="text-sm text-slate-600">Reflect across y = x</p>
+                <div class="mt-3 text-lg font-bold text-purple-600">↓</div>
+              </div>
+
+              <div class="text-center p-6 bg-green-50 rounded-xl">
+                <div class="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                  (b, a)
+                </div>
+                <h4 class="font-semibold text-slate-900 mb-2">Reflected Point</h4>
+                <p class="text-sm text-slate-600">On graph of f⁻¹(x)</p>
+                <div class="mt-3 text-xs text-green-600">Input: b, Output: a</div>
+              </div>
+            </div>
+
+            <div class="mt-8 p-6 bg-gradient-to-r from-slate-50 to-blue-50 rounded-xl">
+              <h4 class="font-semibold text-slate-900 mb-3">Geometric Interpretation</h4>
+              <p class="text-slate-700 text-sm leading-relaxed">
+                Swapping x and y coordinates is the algebraic equivalent of reflecting across y = x.
+                The midpoint between (a, b) and (b, a) is ((a+b)/2, (b+a)/2), which lies on y = x,
+                confirming it as the perpendicular bisector and axis of reflection.
+              </p>
+            </div>
+          </div>
+
+          <div id="plotting-functions" class="bg-white rounded-2xl shadow-elevated p-8 hover-lift">
+            <h3 class="font-canela text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+              <i class="fas fa-chart-line text-orange-600 mr-3"></i>
+              Plotting Functions and Their Inverses
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h4 class="font-semibold text-slate-900 mb-4">Visual Verification</h4>
+                <p class="text-slate-700 mb-4 leading-relaxed">
+                  Graphing both functions on the same axes reveals the <strong>mirror image effect</strong>,
+                  providing immediate visual confirmation of the inverse relationship. This technique is particularly
+                  valuable for understanding complex functions where algebraic verification might be challenging.
+                </p>
+
+                <div class="space-y-3">
+                  <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                    <i class="fas fa-eye text-blue-600 mr-3"></i>
+                    <div>
+                      <h5 class="font-medium text-slate-900">Immediate Symmetry</h5>
+                      <p class="text-xs text-slate-600">Reflection across y = x should be apparent</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                    <i class="fas fa-arrows-alt-h text-green-600 mr-3"></i>
+                    <div>
+                      <h5 class="font-medium text-slate-900">Domain-Range Reversal</h5>
+                      <p class="text-xs text-slate-600">x-axis domain becomes y-axis range</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center p-3 bg-purple-50 rounded-lg">
+                    <i class="fas fa-trending-up text-purple-600 mr-3"></i>
+                    <div>
+                      <h5 class="font-medium text-slate-900">Monotonicity Preservation</h5>
+                      <p class="text-xs text-slate-600">Increasing functions have increasing inverses</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl">
+                <h4 class="font-semibold text-slate-900 mb-4">Practical Graphing Tips</h4>
+                <div class="space-y-4 text-sm">
+                  <div class="flex items-start">
+                    <span class="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">1</span>
+                    <div>
+                      <h5 class="font-medium text-slate-900">Plot Original Function</h5>
+                      <p class="text-slate-600">Use key points, intercepts, and characteristic behavior</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start">
+                    <span class="w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">2</span>
+                    <div>
+                      <h5 class="font-medium text-slate-900">Map Key Points</h5>
+                      <p class="text-slate-600">Swap coordinates of critical points from original function</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start">
+                    <span class="w-6 h-6 bg-pink-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">3</span>
+                    <div>
+                      <h5 class="font-medium text-slate-900">Plot Inverse Function</h5>
+                      <p class="text-slate-600">Connect mapped points, maintaining similar shape characteristics</p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-start">
+                    <span class="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5">4</span>
+                    <div>
+                      <h5 class="font-medium text-slate-900">Verify Symmetry</h5>
+                      <p class="text-slate-600">Check reflection across y = x line for accuracy</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#dbeafe',
+                primaryTextColor: '#1f2937',
+                primaryBorderColor: '#1e40af',
+                lineColor: '#64748b',
+                secondaryColor: '#dcfce7',
+                tertiaryColor: '#fef3c7',
+                background: '#ffffff',
+                mainBkg: '#ffffff',
+                nodeBkg: '#dbeafe',
+                clusterBkg: '#f8fafc',
+                edgeLabelBackground: '#ffffff',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '14px'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 20
+            },
+            gantt: {
+                useMaxWidth: true
+            },
+            journey: {
+                useMaxWidth: true
+            },
+            timeline: {
+                useMaxWidth: true
+            }
+        });
+
+        // Initialize Mermaid Controls for zoom and pan
+        function initializeMermaidControls() {
+            const containers = document.querySelectorAll('.mermaid-container');
+
+            containers.forEach(container => {
+            const mermaidElement = container.querySelector('.mermaid');
+            let scale = 1;
+            let isDragging = false;
+            let startX, startY, translateX = 0, translateY = 0;
+
+            //
+            let isTouch = false;
+            let touchStartTime = 0;
+            let initialDistance = 0;
+            let initialScale = 1;
+            let isPinching = false;
+
+            // Zoom controls
+            const zoomInBtn = container.querySelector('.zoom-in');
+            const zoomOutBtn = container.querySelector('.zoom-out');
+            const resetBtn = container.querySelector('.reset-zoom');
+            const fullscreenBtn = container.querySelector('.fullscreen');
+
+            function updateTransform() {
+                mermaidElement.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+
+                if (scale > 1) {
+                container.classList.add('zoomed');
+                } else {
+                container.classList.remove('zoomed');
+                }
+
+                mermaidElement.style.cursor = isDragging ? 'grabbing' : 'grab';
+            }
+
+            if (zoomInBtn) {
+                zoomInBtn.addEventListener('click', () => {
+                scale = Math.min(scale * 1.25, 4);
+                updateTransform();
+                });
+            }
+
+            if (zoomOutBtn) {
+                zoomOutBtn.addEventListener('click', () => {
+                scale = Math.max(scale / 1.25, 0.3);
+                if (scale <= 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+                updateTransform();
+                });
+            }
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                scale = 1;
+                translateX = 0;
+                translateY = 0;
+                updateTransform();
+                });
+            }
+
+            if (fullscreenBtn) {
+                fullscreenBtn.addEventListener('click', () => {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                } else if (container.msRequestFullscreen) {
+                    container.msRequestFullscreen();
+                }
+                });
+            }
+
+            // Mouse Events
+            mermaidElement.addEventListener('mousedown', (e) => {
+                if (isTouch) return;
+
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+                mermaidElement.style.cursor = 'grabbing';
+                updateTransform();
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging && !isTouch) {
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                updateTransform();
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging && !isTouch) {
+                isDragging = false;
+                mermaidElement.style.cursor = 'grab';
+                updateTransform();
+                }
+            });
+
+            document.addEventListener('mouseleave', () => {
+                if (isDragging && !isTouch) {
+                isDragging = false;
+                mermaidElement.style.cursor = 'grab';
+                updateTransform();
+                }
+            });
+
+            //
+            function getTouchDistance(touch1, touch2) {
+                return Math.hypot(
+                touch2.clientX - touch1.clientX,
+                touch2.clientY - touch1.clientY
+                );
+            }
+
+            // Touch Events
+            mermaidElement.addEventListener('touchstart', (e) => {
+                isTouch = true;
+                touchStartTime = Date.now();
+
+                if (e.touches.length === 1) {
+                //
+                isPinching = false;
+                isDragging = true;
+
+                const touch = e.touches[0];
+                startX = touch.clientX - translateX;
+                startY = touch.clientY - translateY;
+
+                } else if (e.touches.length === 2) {
+                //
+                isPinching = true;
+                isDragging = false;
+
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                initialDistance = getTouchDistance(touch1, touch2);
+                initialScale = scale;
+                }
+
+                e.preventDefault();
+            }, { passive: false });
+
+            mermaidElement.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1 && isDragging && !isPinching) {
+                //
+                const touch = e.touches[0];
+                translateX = touch.clientX - startX;
+                translateY = touch.clientY - startY;
+                updateTransform();
+
+                } else if (e.touches.length === 2 && isPinching) {
+                //
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const currentDistance = getTouchDistance(touch1, touch2);
+
+                if (initialDistance > 0) {
+                    const newScale = Math.min(Math.max(
+                    initialScale * (currentDistance / initialDistance),
+                    0.3
+                    ), 4);
+                    scale = newScale;
+                    updateTransform();
+                }
+                }
+
+                e.preventDefault();
+            }, { passive: false });
+
+            mermaidElement.addEventListener('touchend', (e) => {
+                //
+                if (e.touches.length === 0) {
+                isDragging = false;
+                isPinching = false;
+                initialDistance = 0;
+
+                //
+                setTimeout(() => {
+                    isTouch = false;
+                }, 100);
+                } else if (e.touches.length === 1 && isPinching) {
+                //
+                isPinching = false;
+                isDragging = true;
+
+                const touch = e.touches[0];
+                startX = touch.clientX - translateX;
+                startY = touch.clientY - translateY;
+                }
+
+                updateTransform();
+            });
+
+            mermaidElement.addEventListener('touchcancel', (e) => {
+                isDragging = false;
+                isPinching = false;
+                initialDistance = 0;
+
+                setTimeout(() => {
+                isTouch = false;
+                }, 100);
+
+                updateTransform();
+            });
+
+            // Enhanced wheel zoom with better center point handling
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const rect = container.getBoundingClientRect();
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                const newScale = Math.min(Math.max(scale * delta, 0.3), 4);
+
+                // Adjust translation to zoom towards center
+                if (newScale !== scale) {
+                const scaleDiff = newScale / scale;
+                translateX = translateX * scaleDiff;
+                translateY = translateY * scaleDiff;
+                scale = newScale;
+
+                if (scale <= 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+
+                updateTransform();
+                }
+            });
+
+            // Initialize display
+            updateTransform();
+            });
+        }
+
+        // Toggle TOC on mobile
+        const tocToggle = document.getElementById('toc-toggle');
+        const tocContainer = document.getElementById('toc-container');
+        
+        tocToggle.addEventListener('click', () => {
+            tocContainer.classList.toggle('translate-x-0');
+            tocContainer.classList.toggle('-translate-x-full');
+        });
+
+        // Close TOC when clicking a link on mobile
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    tocContainer.classList.remove('translate-x-0');
+                    tocContainer.classList.add('-translate-x-full');
+                }
+            });
+        });
+
+        // Smooth scrolling for TOC links
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Active TOC link highlighting
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id], div[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Initialize mermaid controls after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeMermaidControls();
+        });
+    </script>
+  
+
+</body></html>
