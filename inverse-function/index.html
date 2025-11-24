@@ -465,6 +465,52 @@
           </div>
         </section>
 
+<div id="onto-functions" class="bg-white rounded-2xl shadow-elevated p-8 hover-lift">
+  <h3 class="font-canela text-2xl font-semibold text-slate-900 mb-6 flex items-center">
+    <i class="fas fa-arrows-alt text-blue-600 mr-3"></i>
+    The Partner Requirement: Onto (Surjective) Functions
+  </h3>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div>
+      <p class="text-slate-700 leading-relaxed mb-4">
+        For a function to be <strong>invertible</strong> it must also be <strong>onto</strong> (surjective).  
+        A function f : A → B is onto if <em>every</em> element in the codomain B is actually “hit” by some element from the domain A.
+      </p>
+
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-4">
+        <h4 class="font-semibold text-blue-900 mb-2">Vertical Line Test for Range</h4>
+        <p class="text-blue-800 text-sm">
+          A function is onto if and only if every horizontal line drawn through the codomain intersects the graph <em>at least</em> once.
+        </p>
+      </div>
+
+      <p class="text-slate-700 text-sm">
+        For example, g(x) = eˣ maps ℝ → ℝ is <strong>not</strong> onto because the negative numbers in the codomain are never reached.  
+        Restrict the codomain to (0, ∞) and it becomes onto, hence invertible; the inverse is g⁻¹(x) = ln x.
+      </p>
+    </div>
+
+    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl">
+      <h4 class="font-semibold text-slate-900 mb-4">Why Non-Onto Functions Fail</h4>
+      <div class="space-y-3 text-sm">
+        <div class="flex items-start">
+          <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
+          <p class="text-slate-700">If y ∈ B is never produced by f, then f⁻¹(y) is undefined—no input to send back to</p>
+        </div>
+        <div class="flex items-start">
+          <i class="fas fa-times-circle text-red-500 mt-1 mr-3"></i>
+          <p class="text-slate-700">The alleged inverse would have a “hole” in its domain, violating the function definition</p>
+        </div>
+        <div class="flex items-start">
+          <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+          <p class="text-slate-700">Onto functions guarantee the inverse’s domain is the entire intended codomain</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
         <!-- Section 2: Algebraic Techniques -->
         <section id="algebraic-techniques" class="space-y-12">
           <div class="text-center mb-16">
